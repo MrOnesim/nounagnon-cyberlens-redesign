@@ -130,6 +130,7 @@ const projectCases = [
   {
     title: "Programme FUTUR",
     role: "Communication visuelle",
+    image: "/images/programme-futur.jpg",
     description:
       "Chargé de communication du programme depuis son édition 6 : couverture photo et vidéo des sessions de formation informatique pour enfants, dans plusieurs villes du Bénin, et création des supports pédagogiques et sociaux.",
   },
@@ -766,6 +767,21 @@ export default function App() {
               data-reveal="up"
               data-reveal-delay={String(index)}
             >
+              {"image" in project && project.image ? (
+                <button
+                  type="button"
+                  onClick={() => setLightbox({ src: project.image, alt: project.title })}
+                  className="group mb-6 block w-full cursor-zoom-in overflow-hidden"
+                  aria-label={`Agrandir : ${project.title}`}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    loading="lazy"
+                    className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </button>
+              ) : null}
               <p className="mb-3 text-sm text-[var(--gold-soft)]">{project.role}</p>
               <h3 className="mb-4 font-display text-3xl text-white">{project.title}</h3>
               <p className="leading-7 text-zinc-300">{project.description}</p>
