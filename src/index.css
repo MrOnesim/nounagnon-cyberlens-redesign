@@ -1,0 +1,364 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0a0908;
+  --ink-raised: #16130f;
+  --ink-line: rgba(245, 241, 234, 0.1);
+  --ink-line-soft: rgba(245, 241, 234, 0.06);
+  --paper: #efe7d8;
+  --paper-ink: #1b1611;
+  --paper-line: rgba(27, 22, 17, 0.14);
+  --bone: #f5f1ea;
+  --mist: #a39b8d;
+  --gold: #cf9a44;
+  --gold-soft: #e8bd76;
+  --teal: #4c9089;
+  --teal-soft: #79b6af;
+
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+}
+
+.font-display {
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+}
+
+/* ---------- grain (subject: analog film texture) ---------- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+/* ---------- duotone treatment for portraits ---------- */
+.duotone {
+  filter: grayscale(1) contrast(1.18) brightness(0.92);
+}
+.duotone-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, var(--teal) 0%, transparent 46%, var(--gold) 100%);
+  mix-blend-mode: color;
+  opacity: 0.9;
+}
+.duotone-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, var(--ink) 100%);
+}
+
+/* ---------- corner-bracket / autofocus frame motif ---------- */
+.af-frame {
+  position: relative;
+}
+.af-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--gold-soft);
+  opacity: 0;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+  z-index: 3;
+}
+.af-tl {
+  top: 12px;
+  left: 12px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+  transform: translate(-7px, -7px);
+}
+.af-tr {
+  top: 12px;
+  right: 12px;
+  border-top: 1.5px solid;
+  border-right: 1.5px solid;
+  transform: translate(7px, -7px);
+}
+.af-bl {
+  bottom: 12px;
+  left: 12px;
+  border-bottom: 1.5px solid;
+  border-left: 1.5px solid;
+  transform: translate(-7px, 7px);
+}
+.af-br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+  transform: translate(7px, 7px);
+}
+.af-frame:hover .af-corner {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ---------- RGB channel-split hover (subject: digital lens / signal) ---------- */
+.rgb-shift {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+.rgb-shift-r {
+  filter: sepia(1) saturate(8) hue-rotate(-52deg) brightness(0.85);
+}
+.rgb-shift-c {
+  filter: sepia(1) saturate(8) hue-rotate(140deg) brightness(0.85);
+}
+.af-frame:hover .rgb-shift-r {
+  opacity: 0.5;
+  transform: translate(-3px, 0);
+}
+.af-frame:hover .rgb-shift-c {
+  opacity: 0.5;
+  transform: translate(3px, 0);
+}
+.af-frame:hover .af-base {
+  opacity: 0.94;
+}
+.af-base {
+  transition: opacity 0.45s ease;
+}
+
+/* ---------- shutter-curtain loader (subject: focal-plane shutter) ---------- */
+.iris-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: iris-hide 0.01s linear 1.7s forwards;
+}
+.shutter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 52%;
+  background: var(--ink);
+}
+.shutter-top {
+  top: 0;
+  animation: shutter-up 0.85s cubic-bezier(0.75, 0, 0.18, 1) 0.55s forwards;
+}
+.shutter-bottom {
+  bottom: 0;
+  animation: shutter-down 0.85s cubic-bezier(0.75, 0, 0.18, 1) 0.55s forwards;
+}
+.iris-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  animation: center-fade 0.35s ease 0.62s forwards;
+}
+.iris-center svg {
+  width: 64px;
+  height: 64px;
+  animation: iris-spin 0.9s cubic-bezier(0.6, 0, 0.2, 1) both;
+}
+.iris-mark {
+  opacity: 0;
+  color: var(--bone);
+  animation: iris-mark-in 0.5s ease 0.08s both;
+}
+.iris-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  background: var(--bone);
+  pointer-events: none;
+  animation: flash-out 0.4s ease 0.56s both;
+}
+
+@keyframes iris-mark-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.32em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.06em;
+  }
+}
+@keyframes iris-spin {
+  from {
+    transform: rotate(-32deg) scale(0.85);
+    opacity: 0.4;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes shutter-up {
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes shutter-down {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes center-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes flash-out {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes iris-hide {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+/* ---------- role cycler ---------- */
+.role-fade {
+  animation: role-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes role-in {
+  from {
+    opacity: 0;
+    transform: translateY(55%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- hero portrait slow drift ---------- */
+.hero-drift {
+  animation: hero-drift 22s ease-in-out infinite alternate;
+}
+@keyframes hero-drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.4%, 1%, 0);
+  }
+}
+
+/* ---------- scroll reveal system (JS-driven via IntersectionObserver) ---------- */
+[data-reveal] {
+  opacity: 0;
+}
+[data-reveal="up"] {
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+[data-reveal="mask"] {
+  opacity: 1;
+  overflow: hidden;
+}
+[data-reveal="mask"] .reveal-mask-inner {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 0.9s cubic-bezier(0.6, 0, 0.15, 1);
+}
+[data-reveal="mask"].is-visible .reveal-mask-inner {
+  transform: translateY(0);
+}
+[data-reveal="scale"] {
+  transform: scale(1.08);
+  transition:
+    opacity 0.9s ease,
+    transform 1.1s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+[data-reveal="left"] {
+  transform: translateX(-26px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal-delay="1"] {
+  transition-delay: 0.1s;
+}
+[data-reveal-delay="2"] {
+  transition-delay: 0.2s;
+}
+[data-reveal-delay="3"] {
+  transition-delay: 0.3s;
+}
+
+/* ---------- misc ---------- */
+.sprocket-edge {
+  background-image: radial-gradient(circle, var(--ink) 2.5px, transparent 2.6px);
+  background-size: 16px 16px;
+  background-position: center;
+  height: 10px;
+}
+
+.blink {
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  .hero-drift,
+  .shutter-top,
+  .shutter-bottom,
+  .iris-center,
+  .iris-center svg,
+  .iris-mark,
+  .iris-flash,
+  .role-fade,
+  .blink {
+    animation: none !important;
+  }
+  .iris-overlay {
+    display: none !important;
+  }
+  [data-reveal],
+  .reveal-mask-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+}
