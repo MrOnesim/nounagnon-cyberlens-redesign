@@ -783,9 +783,39 @@ export default function App() {
             </p>
             <div className="space-y-4 text-lg text-zinc-300" data-reveal="up" data-reveal-delay="2">
               <p>Nounagnon Cyberlens</p>
-              <p>WhatsApp : +229 XX XX XX XX</p>
-              <p>Email : contact@nounagnoncyberlens.com</p>
-              <p>Instagram : @nounagnoncyberlens</p>
+              <p>
+                WhatsApp :{" "}
+                <a
+                  href="https://wa.me/22955634748"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-[var(--gold-soft)]"
+                >
+                  +229 55 63 47 48
+                </a>
+              </p>
+              <p>
+                Instagram :{" "}
+                <a
+                  href="https://www.instagram.com/gillesbryan_818"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-[var(--gold-soft)]"
+                >
+                  @gillesbryan_818
+                </a>
+              </p>
+              <p>
+                Facebook :{" "}
+                <a
+                  href="https://www.facebook.com/share/17PKocPrRv/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-[var(--gold-soft)]"
+                >
+                  Nounagnon Cyberlens
+                </a>
+              </p>
             </div>
           </div>
           <form
