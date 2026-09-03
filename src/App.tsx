@@ -11,48 +11,53 @@ const photoCategories = ["Tout", "Portrait", "Mode", "Reportage", "Studio"] as c
 
 const photography = [
   {
-    src: "https://images.pexels.com/photos/35587808/pexels-photo-35587808.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    src: "/images/portrait.jpg",
+    title: "Portrait studio",
+    category: "Portrait",
+  },
+  {
+    src: "/images/pexels-photo-38002008.jpg",
     title: "Portrait éditorial",
     category: "Portrait",
   },
   {
-    src: "https://images.pexels.com/photos/37177402/pexels-photo-37177402.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
-    title: "Portrait de rue, Soweto",
-    category: "Reportage",
-  },
-  {
-    src: "https://images.pexels.com/photos/6389945/pexels-photo-6389945.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
-    title: "Marché et vie quotidienne",
-    category: "Reportage",
-  },
-  {
-    src: "https://images.pexels.com/photos/27778441/pexels-photo-27778441.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-    title: "Mode traditionnelle, Lagos",
-    category: "Mode",
-  },
-  {
-    src: "https://images.pexels.com/photos/39072208/pexels-photo-39072208.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
+    src: "/images/tradit.jpg",
     title: "Tenue traditionnelle",
     category: "Mode",
   },
   {
-    src: "https://images.pexels.com/photos/20293146/pexels-photo-20293146.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
-    title: "Reportage humain",
+    src: "/images/tradit-festive.jpg",
+    title: "Tenue traditionnelle festive",
+    category: "Mode",
+  },
+  {
+    src: "/images/evenementiel.jpg",
+    title: "Couverture événementielle",
     category: "Reportage",
   },
   {
-    src: "https://images.pexels.com/photos/30403149/pexels-photo-30403149.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    src: "/images/Celebration.jpg",
+    title: "Célébration",
+    category: "Reportage",
+  },
+  {
+    src: "/images/live-style-benin.jpg",
+    title: "Style de vie, Bénin",
+    category: "Reportage",
+  },
+  {
+    src: "/images/pexels-photo-16274227.jpg",
     title: "Scène de rue",
     category: "Reportage",
   },
   {
-    src: "https://images.pexels.com/photos/18189715/pexels-photo-18189715.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
+    src: "/images/pexels-photo-260951.jpg",
     title: "Ville ouest-africaine",
     category: "Reportage",
   },
   {
-    src: "https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-    title: "Portrait studio masculin",
+    src: "https://images.pexels.com/photos/35587808/pexels-photo-35587808.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Portrait éditorial créatif",
     category: "Portrait",
   },
   {
@@ -63,6 +68,11 @@ const photography = [
   {
     src: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Mode éditorial",
+    category: "Mode",
+  },
+  {
+    src: "https://images.pexels.com/photos/27778441/pexels-photo-27778441.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Mode traditionnelle, Lagos",
     category: "Mode",
   },
   {
@@ -80,9 +90,18 @@ const photography = [
     title: "Pose studio, forte lumière",
     category: "Studio",
   },
+  {
+    src: "https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Portrait studio masculin",
+    category: "Studio",
+  },
 ];
 
 const videoFrames = [
+  {
+    src: "/images/cadrage-video.jpg",
+    title: "Cadrage vidéo",
+  },
   {
     src: "https://images.pexels.com/photos/5314217/pexels-photo-5314217.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
     title: "Tournage vidéo professionnel",
@@ -90,10 +109,6 @@ const videoFrames = [
   {
     src: "https://images.pexels.com/photos/3928550/pexels-photo-3928550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
     title: "Montage et post-production vidéo",
-  },
-  {
-    src: "https://images.pexels.com/photos/15718298/pexels-photo-15718298.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
-    title: "Aftermovie d'événement",
   },
 ];
 
