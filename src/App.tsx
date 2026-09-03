@@ -126,25 +126,43 @@ const process = [
   "Livraison optimisée pour le web, l'impression et les réseaux",
 ];
 
-const projectCases = [
+interface ProjectCase {
+  title: string;
+  role: string;
+  description: string;
+  category?: string;
+  image?: string;
+  missions?: string;
+}
+
+const projectCases: ProjectCase[] = [
   {
     title: "Programme FUTUR",
-    role: "Communication visuelle",
+    category: "Projet phare",
+    role: "Chargé de communication, photographe officiel, vidéaste et créateur de contenus visuels",
     image: "/images/programme-futur.jpg",
     description:
-      "Chargé de communication du programme depuis son édition 6 : couverture photo et vidéo des sessions de formation informatique pour enfants, dans plusieurs villes du Bénin, et création des supports pédagogiques et sociaux.",
+      "Une initiative dédiée à la formation des jeunes et des enfants dans plusieurs domaines innovants.",
+    missions:
+      "Couverture photo et vidéo, création des supports de communication et production de contenus sociaux.",
   },
   {
-    title: "Mission Culture & Espoir — BEDJI",
-    role: "Identité & pitch investisseur",
+    title: "Programme FUTUR",
+    role: "Communication globale",
     description:
-      "Conception du dossier de présentation et des visuels destinés aux partenaires d'un projet culturel et humanitaire, pour rendre l'ambition du projet lisible en quelques pages.",
+      "Couverture photo et vidéo des activités, création de supports de communication et production de contenus pour renforcer la visibilité du programme.",
   },
   {
-    title: "Portraits de marque personnelle",
-    role: "Photographie de studio",
+    title: "Shooting mode",
+    role: "Photographie éditoriale",
     description:
-      "Séances portrait pour entrepreneurs et professionnels qui ont besoin d'une image fiable pour leur CV, leur site ou leurs réseaux — cadrage sobre, lumière maîtrisée, retouche discrète.",
+      "Direction visuelle, portraits stylisés, sélection et retouche des images pour lookbook, publication sociale et présentation de collection.",
+  },
+  {
+    title: "Vidéos promotionnelles",
+    role: "Contenu marque",
+    description:
+      "Formats courts et dynamiques pour annoncer une activité, présenter une offre, documenter un événement et convertir l'attention en action.",
   },
 ];
 
@@ -757,31 +775,52 @@ export default function App() {
       <section id="projets" className="mx-auto max-w-7xl px-5 py-24 md:px-8 lg:py-32">
         <SectionMark index="07" label="Projets" />
         <h2 className="max-w-2xl font-display text-4xl leading-tight text-white md:text-6xl" data-reveal="up">
-          Trois façons de travailler avec Cyberlens.
+          Des projets qui parlent d'eux-mêmes.
         </h2>
-        <div className="mt-16 grid gap-0 border-y border-[var(--ink-line)] md:grid-cols-3">
-          {projectCases.map((project, index) => (
+
+        <div
+          className="mt-16 grid gap-10 border-t border-[var(--ink-line)] pt-12 lg:grid-cols-[0.9fr_1.1fr]"
+          data-reveal="up"
+        >
+          <div className="relative overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setLightbox({ src: projectCases[0].image!, alt: projectCases[0].title })}
+              className="group block h-full w-full cursor-zoom-in overflow-hidden"
+              aria-label={`Agrandir : ${projectCases[0].title}`}
+            >
+              <img
+                src={projectCases[0].image!}
+                alt="Enfants du Programme FUTUR"
+                className="aspect-[4/5] h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center gap-6">
+            <p className="text-sm italic text-[var(--teal-soft)]">{projectCases[0].category}</p>
+            <h3 className="font-display text-4xl text-white md:text-5xl">{projectCases[0].title}</h3>
+            <p className="text-lg leading-8 text-zinc-300">{projectCases[0].description}</p>
+            <dl className="space-y-3 border-y border-[var(--ink-line)] py-5">
+              <div>
+                <dt className="text-sm text-[var(--teal-soft)]">Rôle</dt>
+                <dd className="mt-1 text-zinc-200">{projectCases[0].role}</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-[var(--teal-soft)]">Missions</dt>
+                <dd className="mt-1 text-zinc-200">{projectCases[0].missions}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <div className="mt-14 grid gap-0 border-y border-[var(--ink-line)] md:grid-cols-3">
+          {projectCases.slice(1).map((project, index) => (
             <article
               key={project.title}
               className="border-[var(--ink-line)] py-8 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
               data-reveal="up"
               data-reveal-delay={String(index)}
             >
-              {"image" in project && project.image ? (
-                <button
-                  type="button"
-                  onClick={() => setLightbox({ src: project.image, alt: project.title })}
-                  className="group mb-6 block w-full cursor-zoom-in overflow-hidden"
-                  aria-label={`Agrandir : ${project.title}`}
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    loading="lazy"
-                    className="aspect-[4/3] h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                </button>
-              ) : null}
               <p className="mb-3 text-sm text-[var(--gold-soft)]">{project.role}</p>
               <h3 className="mb-4 font-display text-3xl text-white">{project.title}</h3>
               <p className="leading-7 text-zinc-300">{project.description}</p>
