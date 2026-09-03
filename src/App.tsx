@@ -361,7 +361,6 @@ function ShutterLoader() {
 export default function App() {
   const logoRef = useRef<HTMLDivElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollPct, setScrollPct] = useState(0);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
 
   const [form, setForm] = useState({ name: "", contact: "", type: "Photographie", message: "" });
@@ -401,9 +400,6 @@ export default function App() {
           const deg = Math.min(window.scrollY / 6, 130);
           logoRef.current.style.transform = `rotate(${deg}deg)`;
         }
-        const doc = document.documentElement;
-        const max = doc.scrollHeight - window.innerHeight;
-        setScrollPct(max > 0 ? window.scrollY / max : 0);
         ticking = false;
       });
     };
@@ -438,11 +434,6 @@ export default function App() {
     <main className="min-h-screen bg-[var(--ink)] text-[var(--bone)] selection:bg-[var(--gold)] selection:text-black">
       <div className="grain" aria-hidden="true" />
       <ShutterLoader />
-      <div
-        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-[var(--gold-soft)]"
-        style={{ transform: `scaleX(${scrollPct})` }}
-        aria-hidden="true"
-      />
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-[var(--ink-line-soft)] bg-black/30 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
