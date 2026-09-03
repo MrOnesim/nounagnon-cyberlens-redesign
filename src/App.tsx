@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 /*  Assets                                                             */
 /* ------------------------------------------------------------------ */
 
-const heroPortrait = "/images/cybely.png";
-const aboutPortrait = "/images/cyber.png";
+const heroPortrait = "/images/cybely.jpg";
+const aboutPortrait = "/images/cyber.jpg";
 
 const photoCategories = ["Tout", "Portrait", "Mode", "Reportage", "Studio"] as const;
 
@@ -114,27 +114,27 @@ const videoFrames = [
 
 const designWorks = [
   {
-    src: "https://images.pexels.com/photos/34155027/pexels-photo-34155027.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    src: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&h=900&w=1300",
+    title: "Direction créative",
+  },
+  {
+    src: "https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Identité visuelle de marque",
   },
   {
-    src: "https://images.pexels.com/photos/16313504/pexels-photo-16313504.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-    title: "Affiche d'événement",
+    src: "https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Design d'affiche",
   },
   {
-    src: "https://images.pexels.com/photos/30499766/pexels-photo-30499766.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
+    src: "https://images.pexels.com/photos/1714917/pexels-photo-1714917.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Flyer promotionnel",
   },
   {
-    src: "https://images.pexels.com/photos/16313709/pexels-photo-16313709.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-    title: "Campagne réseaux sociaux",
-  },
-  {
-    src: "https://images.pexels.com/photos/16698508/pexels-photo-16698508.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
+    src: "https://images.pexels.com/photos/1634025/pexels-photo-1634025.jpeg?auto=compress&cs=tinysrgb&h=900&w=1300",
     title: "Visuel de campagne",
   },
   {
-    src: "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    src: "https://images.pexels.com/photos/2058128/pexels-photo-2058128.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Direction artistique",
   },
 ];
@@ -563,9 +563,8 @@ export default function App() {
           <img
             src={heroPortrait}
             alt="Nounagnon Cyberlens, photographe et vidéaste, portrait studio"
-            className="duotone hero-drift h-full w-full object-cover object-top"
+            className="hero-drift h-full w-full object-cover object-top"
           />
-          <div className="duotone-wash" />
           <div className="duotone-fade" />
         </div>
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[var(--ink)] via-black/25 to-black/10" />
@@ -612,7 +611,6 @@ export default function App() {
           src={aboutPortrait}
           alt="Portrait de Nounagnon, en studio"
           className="h-full min-h-[520px] w-full"
-          duotone
         />
         <div className="flex flex-col justify-center space-y-8">
           <SectionMark index="01" label="À propos" />
@@ -817,24 +815,24 @@ export default function App() {
             Création de supports imprimables, visuels réseaux sociaux et identités visuelles avec Photoshop,
             Lightroom, Premiere Pro et Canva.
           </p>
-          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div className="mt-14 grid auto-rows-[240px] grid-cols-2 gap-4 md:grid-cols-3 lg:auto-rows-[280px]">
             {designWorks.map((work, index) => (
               <button
                 key={work.src}
                 type="button"
                 onClick={() => setLightbox({ src: work.src, alt: work.title })}
                 data-reveal="scale"
-                className={`group relative block h-full min-h-[280px] w-full cursor-zoom-in overflow-hidden p-0 ${
-                  index === 2 || index === 4 ? "md:col-span-2" : ""
+                className={`group relative block h-full w-full cursor-zoom-in overflow-hidden p-0 ${
+                  index === 0 ? "col-span-2 row-span-2" : ""
                 }`}
               >
                 <img
                   src={work.src}
                   alt={work.title}
-                  className="h-full min-h-[280px] w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-sm font-medium text-white opacity-0 transition duration-300 hover:opacity-100">
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-sm font-medium text-white opacity-0 transition duration-300 group-hover:opacity-100">
                   {work.title}
                 </span>
               </button>
