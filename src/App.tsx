@@ -7,38 +7,78 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 const heroPortrait = "/images/cybely.png";
 const aboutPortrait = "/images/cyber.png";
 
+const photoCategories = ["Tout", "Portrait", "Mode", "Reportage", "Studio"] as const;
+
 const photography = [
   {
     src: "https://images.pexels.com/photos/35587808/pexels-photo-35587808.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Portrait éditorial",
+    category: "Portrait",
   },
   {
     src: "https://images.pexels.com/photos/37177402/pexels-photo-37177402.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
     title: "Portrait de rue, Soweto",
+    category: "Reportage",
   },
   {
     src: "https://images.pexels.com/photos/6389945/pexels-photo-6389945.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
     title: "Marché et vie quotidienne",
+    category: "Reportage",
   },
   {
     src: "https://images.pexels.com/photos/27778441/pexels-photo-27778441.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Mode traditionnelle, Lagos",
+    category: "Mode",
   },
   {
     src: "https://images.pexels.com/photos/39072208/pexels-photo-39072208.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
     title: "Tenue traditionnelle",
+    category: "Mode",
   },
   {
     src: "https://images.pexels.com/photos/20293146/pexels-photo-20293146.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
     title: "Reportage humain",
+    category: "Reportage",
   },
   {
     src: "https://images.pexels.com/photos/30403149/pexels-photo-30403149.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
     title: "Scène de rue",
+    category: "Reportage",
   },
   {
     src: "https://images.pexels.com/photos/18189715/pexels-photo-18189715.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
     title: "Ville ouest-africaine",
+    category: "Reportage",
+  },
+  {
+    src: "https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Portrait studio masculin",
+    category: "Portrait",
+  },
+  {
+    src: "https://images.pexels.com/photos/1381556/pexels-photo-1381556.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
+    title: "Portrait femme, lumière naturelle",
+    category: "Portrait",
+  },
+  {
+    src: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Mode éditorial",
+    category: "Mode",
+  },
+  {
+    src: "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
+    title: "Shooting mode studio",
+    category: "Studio",
+  },
+  {
+    src: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Portrait studio lumineux",
+    category: "Studio",
+  },
+  {
+    src: "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&h=780&w=1100",
+    title: "Pose studio, forte lumière",
+    category: "Studio",
   },
 ];
 
@@ -362,6 +402,7 @@ export default function App() {
   const logoRef = useRef<HTMLDivElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [activeCategory, setActiveCategory] = useState<(typeof photoCategories)[number]>("Tout");
 
   const [form, setForm] = useState({ name: "", contact: "", type: "Photographie", message: "" });
 
@@ -655,23 +696,48 @@ export default function App() {
             Photographie
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-8 text-zinc-300" data-reveal="up" data-reveal-delay="1">
-            Portrait, mode, événementiel, lifestyle et reportage : une sélection courte pour montrer la force du
-            regard.
+            Portrait, mode, reportage et studio : filtrez par univers pour explorer le regard.
           </p>
-          <div className="mt-14 grid auto-rows-[310px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {photography.map((item, index) => (
-              <LensFrame
-                key={item.title}
-                src={item.src}
-                alt={item.title}
-                caption={item.title}
-                reveal="scale"
-                onClick={() => setLightbox({ src: item.src, alt: item.title })}
-                className={`cursor-zoom-in ${index === 1 || index === 5 ? "lg:col-span-2" : ""} ${
-                  index === 0 || index === 6 ? "lg:row-span-2" : ""
+
+          <div
+            className="mt-10 flex flex-wrap items-center gap-2 border-y border-[var(--ink-line)] py-4"
+            data-reveal="up"
+            data-reveal-delay="1"
+            role="tablist"
+            aria-label="Catégories du portfolio"
+          >
+            {photoCategories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2 text-sm font-medium transition ${
+                  activeCategory === cat
+                    ? "bg-[var(--gold-soft)] text-black"
+                    : "border border-[var(--ink-line)] text-zinc-300 hover:border-[var(--gold-soft)] hover:text-[var(--gold-soft)]"
                 }`}
-              />
+              >
+                {cat}
+              </button>
             ))}
+          </div>
+
+          <div className="mt-10 grid auto-rows-[300px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {photography
+              .filter((item) => activeCategory === "Tout" || item.category === activeCategory)
+              .map((item) => (
+                <LensFrame
+                  key={item.title}
+                  src={item.src}
+                  alt={item.title}
+                  caption={item.title}
+                  reveal="scale"
+                  onClick={() => setLightbox({ src: item.src, alt: item.title })}
+                  className="cursor-zoom-in"
+                />
+              ))}
           </div>
         </div>
       </section>
