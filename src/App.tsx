@@ -46,11 +46,6 @@ const photography = [
     category: "Reportage",
   },
   {
-    src: "/images/pexels-photo-16274227.jpg",
-    title: "Scène de rue",
-    category: "Reportage",
-  },
-  {
     src: "/images/pexels-photo-260951.jpg",
     title: "Ville ouest-africaine",
     category: "Reportage",
