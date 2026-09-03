@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 
 /* ------------------------------------------------------------------ */
 /*  Assets                                                             */
@@ -43,18 +43,45 @@ const photography = [
 ];
 
 const videoFrames = [
-  "https://images.pexels.com/photos/5314217/pexels-photo-5314217.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
-  "https://images.pexels.com/photos/3928550/pexels-photo-3928550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
-  "https://images.pexels.com/photos/15718298/pexels-photo-15718298.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
+  {
+    src: "https://images.pexels.com/photos/5314217/pexels-photo-5314217.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
+    title: "Tournage vidéo professionnel",
+  },
+  {
+    src: "https://images.pexels.com/photos/3928550/pexels-photo-3928550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
+    title: "Montage et post-production vidéo",
+  },
+  {
+    src: "https://images.pexels.com/photos/15718298/pexels-photo-15718298.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=720&w=1200",
+    title: "Aftermovie d'événement",
+  },
 ];
 
 const designWorks = [
-  "https://images.pexels.com/photos/34155027/pexels-photo-34155027.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-  "https://images.pexels.com/photos/16313504/pexels-photo-16313504.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-  "https://images.pexels.com/photos/30499766/pexels-photo-30499766.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
-  "https://images.pexels.com/photos/16313709/pexels-photo-16313709.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
-  "https://images.pexels.com/photos/16698508/pexels-photo-16698508.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
-  "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+  {
+    src: "https://images.pexels.com/photos/34155027/pexels-photo-34155027.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Identité visuelle de marque",
+  },
+  {
+    src: "https://images.pexels.com/photos/16313504/pexels-photo-16313504.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Affiche d'événement",
+  },
+  {
+    src: "https://images.pexels.com/photos/30499766/pexels-photo-30499766.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
+    title: "Flyer promotionnel",
+  },
+  {
+    src: "https://images.pexels.com/photos/16313709/pexels-photo-16313709.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Campagne réseaux sociaux",
+  },
+  {
+    src: "https://images.pexels.com/photos/16698508/pexels-photo-16698508.jpeg?auto=compress&cs=tinysrgb&h=800&w=1000",
+    title: "Visuel de campagne",
+  },
+  {
+    src: "https://images.pexels.com/photos/2582933/pexels-photo-2582933.jpeg?auto=compress&cs=tinysrgb&h=900&w=700",
+    title: "Direction artistique",
+  },
 ];
 
 const navItems = [
@@ -125,16 +152,19 @@ const packages = [
     name: "Essentiel",
     fit: "Portrait, mini-shooting ou visuel rapide",
     deliverables: "10 à 20 photos traitées ou 1 visuel final",
+    price: "À partir de 25 000 FCFA",
   },
   {
     name: "Événement",
     fit: "Conférence, formation, cérémonie ou lancement",
     deliverables: "Reportage photo, récap vidéo court et contenus réseaux",
+    price: "Sur devis selon le format",
   },
   {
     name: "Marque",
     fit: "Entreprise, programme, artiste ou projet public",
     deliverables: "Direction créative, photo, vidéo, design et kit social",
+    price: "Sur devis sur mesure",
   },
 ];
 
@@ -204,6 +234,7 @@ function LensFrame({
   className = "",
   reveal = "scale",
   duotone = false,
+  onClick,
 }: {
   src: string;
   alt: string;
@@ -211,11 +242,16 @@ function LensFrame({
   className?: string;
   reveal?: "scale" | "up";
   duotone?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <figure
       className={`af-frame group relative overflow-hidden ${className}`}
       data-reveal={reveal}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => e.key === "Enter" && onClick() : undefined}
     >
       <span className="af-corner af-tl" />
       <span className="af-corner af-tr" />
@@ -306,6 +342,10 @@ function ShutterLoader() {
 export default function App() {
   const logoRef = useRef<HTMLDivElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollPct, setScrollPct] = useState(0);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+
+  const [form, setForm] = useState({ name: "", contact: "", type: "Photographie", message: "" });
 
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]");
@@ -342,6 +382,9 @@ export default function App() {
           const deg = Math.min(window.scrollY / 6, 130);
           logoRef.current.style.transform = `rotate(${deg}deg)`;
         }
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        setScrollPct(max > 0 ? window.scrollY / max : 0);
         ticking = false;
       });
     };
@@ -349,10 +392,38 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const text = `Bonjour, je m'appelle ${form.name.trim() || "..."}.\nType de projet : ${form.type}.\n${form.message.trim() || ""}`;
+    window.open(
+      `https://wa.me/22955634748?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
+  const update =
+    (key: keyof typeof form) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [key]: e.target.value }));
+
   return (
     <main className="min-h-screen bg-[var(--ink)] text-[var(--bone)] selection:bg-[var(--gold)] selection:text-black">
       <div className="grain" aria-hidden="true" />
       <ShutterLoader />
+      <div
+        className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-[var(--gold-soft)]"
+        style={{ transform: `scaleX(${scrollPct})` }}
+        aria-hidden="true"
+      />
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-[var(--ink-line-soft)] bg-black/30 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3.5 md:px-8">
@@ -585,7 +656,8 @@ export default function App() {
                 alt={item.title}
                 caption={item.title}
                 reveal="scale"
-                className={`${index === 1 || index === 5 ? "lg:col-span-2" : ""} ${
+                onClick={() => setLightbox({ src: item.src, alt: item.title })}
+                className={`cursor-zoom-in ${index === 1 || index === 5 ? "lg:col-span-2" : ""} ${
                   index === 0 || index === 6 ? "lg:row-span-2" : ""
                 }`}
               />
@@ -623,9 +695,15 @@ export default function App() {
           </div>
           <div className="space-y-3">
             {videoFrames.map((frame, index) => (
-              <div key={frame} className={index === 1 ? "ml-auto w-10/12" : "w-full"}>
+              <div key={frame.src} className={index === 1 ? "ml-auto w-10/12" : "w-full"}>
                 <div className="sprocket-edge" aria-hidden="true" />
-                <LensFrame src={frame} alt={`Capture vidéo ${index + 1}`} className="aspect-video w-full" reveal="scale" />
+                <LensFrame
+                  src={frame.src}
+                  alt={frame.title}
+                  className="aspect-video w-full"
+                  reveal="scale"
+                  onClick={() => setLightbox({ src: frame.src, alt: frame.title })}
+                />
                 <div className="sprocket-edge" aria-hidden="true" />
               </div>
             ))}
@@ -650,15 +728,25 @@ export default function App() {
           </p>
           <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3">
             {designWorks.map((work, index) => (
-              <img
-                key={work}
-                src={work}
-                alt={`Création graphique ${index + 1}`}
+              <button
+                key={work.src}
+                type="button"
+                onClick={() => setLightbox({ src: work.src, alt: work.title })}
                 data-reveal="scale"
-                className={`h-full min-h-[280px] w-full object-cover ${
+                className={`group relative block h-full min-h-[280px] w-full cursor-zoom-in overflow-hidden p-0 ${
                   index === 2 || index === 4 ? "md:col-span-2" : ""
                 }`}
-              />
+              >
+                <img
+                  src={work.src}
+                  alt={work.title}
+                  className="h-full min-h-[280px] w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-sm font-medium text-white opacity-0 transition duration-300 hover:opacity-100">
+                  {work.title}
+                </span>
+              </button>
             ))}
           </div>
         </div>
@@ -708,13 +796,14 @@ export default function App() {
               {packages.map((pack) => (
                 <article
                   key={pack.name}
-                  className="grid gap-4 border-b border-[var(--paper-line)] py-7 last:border-b-0 md:grid-cols-[0.7fr_1fr]"
+                  className="grid gap-4 border-b border-[var(--paper-line)] py-7 last:border-b-0 md:grid-cols-[0.7fr_1fr_auto] md:items-center"
                 >
                   <div>
                     <h3 className="font-display text-3xl">{pack.name}</h3>
                     <p className="mt-2 text-sm text-[var(--teal)]">{pack.fit}</p>
                   </div>
                   <p className="text-lg leading-8 text-[var(--paper-ink)]/80">{pack.deliverables}</p>
+                  <p className="font-display text-xl italic text-[var(--teal)] md:text-right">{pack.price}</p>
                 </article>
               ))}
             </div>
@@ -822,20 +911,34 @@ export default function App() {
             className="space-y-5 border border-[var(--ink-line)] bg-white/[0.03] p-6 backdrop-blur md:p-8"
             data-reveal="up"
             data-reveal-delay="1"
+            onSubmit={handleSubmit}
           >
             <div className="grid gap-5 md:grid-cols-2">
               <label className="space-y-2 text-sm text-zinc-300">
                 Nom
-                <input className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]" />
+                <input
+                  value={form.name}
+                  onChange={update("name")}
+                  required
+                  className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]"
+                />
               </label>
               <label className="space-y-2 text-sm text-zinc-300">
                 Contact
-                <input className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]" />
+                <input
+                  value={form.contact}
+                  onChange={update("contact")}
+                  className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]"
+                />
               </label>
             </div>
             <label className="space-y-2 text-sm text-zinc-300">
               Type de projet
-              <select className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]">
+              <select
+                value={form.type}
+                onChange={update("type")}
+                className="w-full border border-[var(--ink-line)] bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[var(--gold-soft)]"
+              >
                 <option>Photographie</option>
                 <option>Vidéo</option>
                 <option>Design graphique</option>
@@ -844,18 +947,87 @@ export default function App() {
             </label>
             <label className="space-y-2 text-sm text-zinc-300">
               Message
-              <textarea className="min-h-36 w-full border border-[var(--ink-line)] bg-black/30 px-4 py-4 text-white outline-none transition focus:border-[var(--gold-soft)]" />
+              <textarea
+                value={form.message}
+                onChange={update("message")}
+                className="min-h-36 w-full border border-[var(--ink-line)] bg-black/30 px-4 py-4 text-white outline-none transition focus:border-[var(--gold-soft)]"
+              />
             </label>
             <button className="w-full bg-[var(--gold-soft)] px-7 py-4 text-sm font-semibold text-black transition hover:bg-white">
               Envoyer la demande
             </button>
+            <p className="text-center text-xs text-zinc-500">
+              Le formulaire ouvre WhatsApp avec votre message pré-rempli.
+            </p>
           </form>
         </div>
       </section>
 
-      <footer className="border-t border-[var(--ink-line)] px-5 py-8 text-center text-sm text-zinc-500 md:px-8">
-        Nounagnon Cyberlens — Cotonou, Bénin
+      <footer className="border-t border-[var(--ink-line)] px-5 py-10 text-center text-sm text-zinc-500 md:px-8">
+        <div className="mb-4 flex items-center justify-center gap-5 text-zinc-400">
+          <a
+            href="https://www.instagram.com/gillesbryan_818"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-[var(--gold-soft)]"
+          >
+            Instagram
+          </a>
+          <span className="text-zinc-700">·</span>
+          <a
+            href="https://www.facebook.com/share/17PKocPrRv/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-[var(--gold-soft)]"
+          >
+            Facebook
+          </a>
+          <span className="text-zinc-700">·</span>
+          <a
+            href="https://wa.me/22955634748"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-[var(--gold-soft)]"
+          >
+            WhatsApp
+          </a>
+        </div>
+        <p>
+          Nounagnon Cyberlens — Cotonou, Bénin ·{" "}
+          <a href="tel:+22955634748" className="transition hover:text-[var(--gold-soft)]">
+            +229 55 63 47 48
+          </a>
+        </p>
       </footer>
+
+      {lightbox ? (
+        <div
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-label={lightbox.alt}
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightbox(null)}
+            aria-label="Fermer"
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center border border-white/30 text-xl text-white transition hover:border-white hover:bg-white hover:text-black"
+          >
+            ✕
+          </button>
+          <figure className="relative max-h-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={lightbox.src}
+              alt={lightbox.alt}
+              className="max-h-[82vh] w-auto object-contain"
+            />
+            {lightbox.alt ? (
+              <figcaption className="mt-3 text-center text-sm text-zinc-300">{lightbox.alt}</figcaption>
+            ) : null}
+          </figure>
+        </div>
+      ) : null}
     </main>
   );
 }
