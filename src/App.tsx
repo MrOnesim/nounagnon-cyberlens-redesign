@@ -592,7 +592,11 @@ export default function App() {
 
         <div className="mx-auto w-full max-w-7xl px-5 pb-20 pt-36 md:px-8 md:pb-28">
           <div className="max-w-4xl space-y-7">
-            <p className="text-sm text-[var(--teal-soft)]" data-reveal="up">
+            <p
+              className="inline-flex items-center gap-3 border border-[var(--gold)]/40 bg-black/30 px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold-soft)] backdrop-blur-sm md:text-base"
+              data-reveal="up"
+            >
+              <span className="h-2 w-2 rounded-full bg-[var(--gold-soft)]" />
               Studio visuel basé à Cotonou, Bénin
             </p>
             <h1
