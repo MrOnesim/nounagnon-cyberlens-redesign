@@ -351,7 +351,7 @@ function RoleCycler() {
     return () => clearInterval(id);
   }, []);
   return (
-    <span className="relative inline-block h-[1.1em] min-w-[9ch] overflow-hidden align-bottom">
+    <span className="inline-flex items-baseline whitespace-nowrap align-baseline">
       <span key={index} className="role-fade font-display italic text-[var(--gold-soft)]">
         {roles[index]}
       </span>
@@ -417,7 +417,6 @@ export default function App() {
   const [form, setForm] = useState({ name: "", contact: "", type: "Photographie", message: "" });
 
   useEffect(() => {
-    const els = document.querySelectorAll("[data-reveal]");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -429,9 +428,21 @@ export default function App() {
       },
       { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
     );
-    els.forEach((el) => io.observe(el));
+    const observe = () => {
+      document.querySelectorAll("[data-reveal]:not(.is-visible)").forEach((el) => {
+        io.observe(el);
+      });
+    };
+    observe();
+    if (activeCategory !== "Tout") {
+      const t = setTimeout(observe, 50);
+      return () => {
+        clearTimeout(t);
+        io.disconnect();
+      };
+    }
     return () => io.disconnect();
-  }, []);
+  }, [activeCategory]);
 
   useEffect(() => {
     const onResize = () => {
