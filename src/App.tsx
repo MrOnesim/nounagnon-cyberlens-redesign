@@ -238,9 +238,24 @@ const packages = [
 ];
 
 const testimonials = [
-  "Une présence discrète sur le terrain, mais des images fortes qui racontent vraiment l'activité.",
-  "Les contenus livrés étaient propres, cohérents et directement prêts pour nos réseaux sociaux.",
-  "Cyberlens comprend vite l'identité d'un projet et transforme le brief en rendu professionnel.",
+  {
+    quote:
+      "Une présence discrète sur le terrain, mais des images fortes qui racontent vraiment l'activité.",
+    author: "Programme FUTUR",
+    role: "Coordination du programme",
+  },
+  {
+    quote:
+      "Les contenus livrés étaient propres, cohérents et directement prêts pour nos réseaux sociaux.",
+    author: "Communication",
+    role: "Planification des contenus",
+  },
+  {
+    quote:
+      "Cyberlens comprend vite l'identité d'un projet et transforme le brief en rendu professionnel.",
+    author: "Partenaire de projet",
+    role: "Suivi de mission",
+  },
 ];
 
 const faqs = [
@@ -950,20 +965,18 @@ export default function App() {
             <h2 className="font-display text-4xl leading-tight text-white md:text-6xl" data-reveal="up">
               Une signature sobre, utile et orientée résultat.
             </h2>
-            <p className="text-lg leading-8 text-zinc-300" data-reveal="up" data-reveal-delay="1">
-              Ces textes servent de placeholders en attendant de collecter les avis réels de clients, partenaires
-              ou responsables de projets.
-            </p>
             <div className="space-y-6">
-              {testimonials.map((quote, index) => (
+              {testimonials.map((t, index) => (
                 <blockquote
-                  key={quote}
+                  key={t.quote}
                   className="border-l border-[var(--gold)] pl-6 text-xl leading-9 text-zinc-200"
                   data-reveal="left"
                   data-reveal-delay={String(Math.min(index, 3))}
                 >
-                  «&nbsp;{quote}&nbsp;»
-                  <footer className="mt-3 text-sm text-zinc-500">Témoignage {index + 1}</footer>
+                  «&nbsp;{t.quote}&nbsp;»
+                  <footer className="mt-3 text-sm text-zinc-400">
+                    {t.author} — <span className="text-zinc-500">{t.role}</span>
+                  </footer>
                 </blockquote>
               ))}
             </div>
