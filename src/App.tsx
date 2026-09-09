@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "r
 /*  Assets                                                             */
 /* ------------------------------------------------------------------ */
 
-const heroPortrait = "/images/cybely.jpg";
+const heroPortrait = "/images/cyber1.png";
 const aboutPortrait = "/images/cyber.jpg";
 
 const photoCategories = ["Tout", "Portrait", "Mode", "Reportage", "Studio"] as const;
