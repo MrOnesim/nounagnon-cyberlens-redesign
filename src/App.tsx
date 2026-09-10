@@ -14,6 +14,7 @@ const photography = [
     src: "/images/pf4.jpg",
     title: "Portrait studio",
     category: "Portrait",
+    imageClassName: "object-top",
   },
   {
     src: "/images/pf3.jpg",
@@ -47,7 +48,7 @@ const photography = [
   },
   {
     src: "/images/pf1.jpg",
-    title: "Ville ouest-africaine",
+    title: "FuturCraft INSTITUT",
     category: "Reportage",
   },
   {
@@ -64,6 +65,7 @@ const photography = [
     src: "/images/pf7.jpg",
     title: "Mode éditorial",
     category: "Mode",
+    imageClassName: "object-top",
   },
   {
     src: "/images/pf8.jpg",
@@ -74,21 +76,25 @@ const photography = [
     src: "/images/pf9.jpg",
     title: "Shooting studio",
     category: "Studio",
+    imageClassName: "object-top",
   },
   {
     src: "/images/pf10.jpg",
     title: "Portrait studio",
     category: "Studio",
+    imageClassName: "object-top",
   },
   {
     src: "/images/pf11.jpg",
-    title: "photo portrait, forte lumière",
+    title: "photo portrait",
     category: "Studio",
+    imageClassName: "object-top",
   },
   {
     src: "images/pf0.jpg",
-    title: "Portrait studio masculin",
+    title: "Portrait studio",
     category: "Studio",
+    imageClassName: "object-top",
   },
 ];
 
@@ -318,6 +324,7 @@ function LensFrame({
   className = "",
   reveal = "scale",
   duotone = false,
+  imageClassName = "",
   onClick,
 }: {
   src: string;
@@ -326,6 +333,7 @@ function LensFrame({
   className?: string;
   reveal?: "scale" | "up";
   duotone?: boolean;
+  imageClassName?: string;
   onClick?: () => void;
 }) {
   return (
@@ -344,12 +352,12 @@ function LensFrame({
       <img
         src={src}
         alt={alt}
-        className={`af-base relative z-0 h-full w-full object-cover ${duotone ? "duotone" : ""}`}
+        className={`af-base relative z-0 h-full w-full object-cover ${imageClassName} ${duotone ? "duotone" : ""}`}
         loading="lazy"
       />
       {duotone ? <div className="duotone-wash" /> : null}
-      <img src={src} alt="" aria-hidden className="rgb-shift rgb-shift-r" loading="lazy" />
-      <img src={src} alt="" aria-hidden className="rgb-shift rgb-shift-c" loading="lazy" />
+      <img src={src} alt="" aria-hidden className={`rgb-shift rgb-shift-r ${imageClassName}`} loading="lazy" />
+      <img src={src} alt="" aria-hidden className={`rgb-shift rgb-shift-c ${imageClassName}`} loading="lazy" />
       {caption ? (
         <figcaption className="absolute inset-x-0 bottom-0 z-[4] translate-y-1 bg-gradient-to-t from-black/85 to-transparent p-5 text-sm font-medium text-white opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
           {caption}
@@ -772,6 +780,7 @@ export default function App() {
                   alt={item.title}
                   caption={item.title}
                   reveal="scale"
+                  imageClassName={item.imageClassName}
                   onClick={() => setLightbox({ src: item.src, alt: item.title })}
                   className="cursor-zoom-in"
                 />
